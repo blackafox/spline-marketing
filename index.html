@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spline Scene</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #canvas3d {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Loader с картинкой */
+        #loader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        #loader img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Картинка заполняет весь экран */
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="loader">
+        <img src="./preview.webp" alt="Загрузка...">
+    </div>
+    <canvas id="canvas3d"></canvas>
+
+    <script type="module">
+        import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.37/build/runtime.js';
+
+        const canvas = document.getElementById('canvas3d');
+        const loader = document.getElementById('loader');
+        const app = new Application(canvas);
+        
+        // Загружаем сцену из того же репозитория
+        app.load('./scene.splinecode')
+            .then(() => {
+                loader.style.display = 'none';
+                console.log('Сцена загружена успешно');
+            })
+            .catch((error) => {
+                loader.innerHTML = '<p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: Arial; color: #666;">Ошибка загрузки</p>';
+                console.error('Ошибка:', error);
+            });
+    </script>
+</body>
+</html>
